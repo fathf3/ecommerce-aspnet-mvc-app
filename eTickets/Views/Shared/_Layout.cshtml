@@ -21,7 +21,7 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Movie" asp-action="Index"><i class="bi bi-film"></i> Movies</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Movies" asp-action="Index"><i class="bi bi-film"></i> Movies</a>
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -38,7 +38,8 @@
 
                     <form class="form-inline my-2 my-lg-0" asp-controller="Movies" asp-action="Filter" style="padding-right: 25px;">
                         <input name="searchString" type="text" class="form-control" placeholder="Search ... " />
-                        <button class="btn btn-outline-info my-2 my-sm-0" type="submit"<i class="bi bi-search"></i>></button>
+                        <button class="btn btn-outline-info my-2 my-sm-0" type="submit">
+                            <i class="bi bi-search"></i></button>
     
 
                     </form>

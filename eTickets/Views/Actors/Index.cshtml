@@ -40,16 +40,12 @@
         </table>
 
     </div>
-    <div style="position: fixed; right:25px; botom: 25px;" class="text-white">
-        <a asp-controller="Actors" asp-action="Create" class="btn btn-success">
-            <i class="bi bi-plus plus-circle"> Add New </i>
-        </a>
-    </div>
+    
 
 </div>
 
 
-
+@await Html.PartialAsync("_CreateItem", "Actors")
 
 
 
