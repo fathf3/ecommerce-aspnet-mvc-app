@@ -29,9 +29,18 @@
                         <td class="align-middle">
                             @Html.DisplayFor(modelItem => item.Name)
                         </td>
-                        <td class="align-middle">
+                        @if(@item.Description.Length < 60){
+                            <td class="align-middle">
                             @Html.DisplayFor(modelItem => item.Description)
-                        </td>
+                            </td>
+                        }
+                        else
+                        {
+                            <td class="align-middle">
+                                @Html.DisplayFor(modelItem => item.Description.Substring(0,60))
+                            </td>
+                        }
+
                         @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
                         {
                             <td class="align-middle">
