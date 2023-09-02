@@ -1,5 +1,6 @@
 ﻿using eTickets.Data;
 using eTickets.Data.Services;
+using eTickets.Data.Static;
 using eTickets.Data.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -11,13 +12,12 @@ using System.Threading.Tasks;
 
 namespace eTickets.Controllers
 {
+    [Authorize(Roles = UserRoles.Admin)]
     public class MoviesController : Controller
     {
+        private readonly IMoviesService _service;
 
-
-        private readonly IMoviesSevice _service;
-
-        public MoviesController(IMoviesSevice service)
+        public MoviesController(IMoviesService service)
         {
             _service = service;
         }
@@ -134,7 +134,6 @@ namespace eTickets.Controllers
             return RedirectToAction(nameof(Index));
         }
     }
-
 
 }
 

@@ -2,10 +2,13 @@ using eTickets.Data;
 using eTickets.Data.Cart;
 using eTickets.Data.Manager;
 using eTickets.Data.Services;
+using eTickets.Models;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -34,12 +37,20 @@ namespace eTickets
             services.AddScoped<IActorsService, ActorManager>();
             services.AddScoped<IProducersService, ProducersManager>();
             services.AddScoped<ICinemasService, CinemaManager>();
-            services.AddScoped<IMoviesSevice, MoviesManager>();
+            services.AddScoped<IMoviesService, MoviesManager>();
+            services.AddScoped<IOrdersService, OrdersManager>();
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped(sc => ShoppingCart.GetShoppingCart(sc));
 
+            //Authentication and authorization
+            services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<AppDbContext>();
+            services.AddMemoryCache();
             services.AddSession();
+            services.AddAuthentication(options =>
+            {
+                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            });
 
             services.AddControllersWithViews();
 
@@ -63,17 +74,23 @@ namespace eTickets
 
             app.UseRouting();
             app.UseSession();
+
+            //Authentication and authorization
+            app.UseAuthentication();
             app.UseAuthorization();
+
+            
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Movies}/{action=Index}/{id?}");
             });
 
             // Seed Data
-            AppDbInitializer.Seed(app);
+            //AppDbInitializer.Seed(app);
+            //AppDbInitializer.SeedUsersAndRoleAsync(app).Wait();
 
 
         }

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace eTickets.Data.Manager
 {
-    public class MoviesManager : EntityBaseRepository<Movie>, IMoviesSevice
+    public class MoviesManager : EntityBaseRepository<Movie>, IMoviesService
     {
         private readonly AppDbContext _context;
         public MoviesManager(AppDbContext context) : base(context)

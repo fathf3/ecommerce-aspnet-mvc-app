@@ -5,6 +5,9 @@ using Microsoft.Extensions.DependencyInjection;
 using System.Collections.Generic;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
+using eTickets.Data.Static;
 
 namespace eTickets.Data
 {
@@ -102,32 +105,32 @@ namespace eTickets.Data
                         {
                             FullName = "Producer 1",
                             Bio = "This is the Bio of the first actor",
-                            ProfilePicture = "http://dotnethow.net/images/producers/producer-1.jpeg"
+                            ProfilePictureURL = "http://dotnethow.net/images/producers/producer-1.jpeg"
 
                         },
                         new Producer()
                         {
                             FullName = "Producer 2",
                             Bio = "This is the Bio of the second actor",
-                            ProfilePicture = "http://dotnethow.net/images/producers/producer-2.jpeg"
+                            ProfilePictureURL = "http://dotnethow.net/images/producers/producer-2.jpeg"
                         },
                         new Producer()
                         {
                             FullName = "Producer 3",
                             Bio = "This is the Bio of the second actor",
-                            ProfilePicture = "http://dotnethow.net/images/producers/producer-3.jpeg"
+                            ProfilePictureURL = "http://dotnethow.net/images/producers/producer-3.jpeg"
                         },
                         new Producer()
                         {
                             FullName = "Producer 4",
                             Bio = "This is the Bio of the second actor",
-                            ProfilePicture = "http://dotnethow.net/images/producers/producer-4.jpeg"
+                            ProfilePictureURL = "http://dotnethow.net/images/producers/producer-4.jpeg"
                         },
                         new Producer()
                         {
                             FullName = "Producer 5",
                             Bio = "This is the Bio of the second actor",
-                            ProfilePicture = "http://dotnethow.net/images/producers/producer-5.jpeg"
+                            ProfilePictureURL = "http://dotnethow.net/images/producers/producer-5.jpeg"
                         }
                     });
                     context.SaveChanges();
@@ -317,5 +320,56 @@ namespace eTickets.Data
 
     
         }
+
+        public static async Task SeedUsersAndRoleAsync(IApplicationBuilder applicationBuilder)
+        {
+            using(var serviceScope = applicationBuilder.ApplicationServices.CreateScope())
+            {
+                // Roles 
+                var roleManager = serviceScope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+                if(!await roleManager.RoleExistsAsync(UserRoles.Admin))
+                    await roleManager.CreateAsync(new IdentityRole(UserRoles.Admin));
+                if (!await roleManager.RoleExistsAsync(UserRoles.User))
+                    await roleManager.CreateAsync(new IdentityRole(UserRoles.User));
+
+
+                //Users
+                string adminEmail = "admin@etickets.com";
+                var userManager = serviceScope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+                var adminUser = await userManager.FindByEmailAsync(adminEmail);
+                if(adminUser == null)
+                {
+                    var newAdminUser = new ApplicationUser()
+                    {
+                        FullName = "Admin User",
+                        UserName = "admin",
+                        Email = adminEmail,
+                        EmailConfirmed = true,
+
+                    };
+
+                    await userManager.CreateAsync(newAdminUser, "Coding@123?");
+                    await userManager.AddToRoleAsync(newAdminUser, UserRoles.Admin);
+                }
+                string appUserEmail = "user@etickets.com";
+               
+                var appUser = await userManager.FindByEmailAsync(appUserEmail);
+                if (appUser == null)
+                {
+                    var newAppUser = new ApplicationUser()
+                    {
+                        FullName = "Application User",
+                        UserName = "user",
+                        Email = appUserEmail,
+                        EmailConfirmed = true,
+
+                    };
+
+                    await userManager.CreateAsync(newAppUser, "123456As-");
+                    await userManager.AddToRoleAsync(newAppUser, UserRoles.User);
+                }
+            }
+        }
+
     }
 }
