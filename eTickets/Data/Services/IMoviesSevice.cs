@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace eTickets.Data.Services
 {
-    public interface IMoviesSevice : IEntityBaseRepository<Movie>
+    public interface IMoviesService : IEntityBaseRepository<Movie>
     {
         Task<Movie> GetMovieByIdAsync(int id);
         Task<NewMovieDropdownsVM> GetNewMovieDropdownsValues();

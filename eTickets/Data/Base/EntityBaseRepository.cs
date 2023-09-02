@@ -5,6 +5,12 @@ using System.Linq.Expressions;
 using System.Linq;
 using System.Threading.Tasks;
 using System;
+using eTickets.Data.Services;
+using eTickets.Data.Static;
+using eTickets.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System.Data;
 
 namespace eTickets.Data.Base
 {
